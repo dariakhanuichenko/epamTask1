@@ -1,26 +1,32 @@
 package controller;
 
+import model.Appliance;
+import model.House;
 import model.PortableAppliance;
 import model.StationaryAppliance;
+import model.services.Service;
 import view.View;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static view.Messages.*;
 
 public class Controller {
-    Menu menu;// = new Menu();
-    View view;//= new view();
-    UtilityArrayListAppliance utility;// = new UtilityArrayListAppliance();
+    private Menu menu;// = new Menu();
+    private View view;//= new view();
+    private Service service;// = new UtilityArrayListAppliance();
+    private House house;
 
     /**
      *
      * @param locale- parametr for licale in view
      */
-    public Controller(String locale) {
+    public Controller(String locale, House house) {
         view = new View(locale);
-        utility = new UtilityArrayListAppliance(view);
+        service = new Service(view);
         menu = new Menu(view);
+        this.house=house;
     }
 
     /**
@@ -28,42 +34,42 @@ public class Controller {
      */
     public void program() {
 
-        ArrayList<PortableAppliance> portableAppliancesArray = utility.createArrayListPortableAppliances();
-        ArrayList<StationaryAppliance> stationaryAppliancesArray = utility.createArrayListStationaryAppliances();
 
         int key;
         while (true) {
             view.printStringInput(MENU);
             do {
-                key = utility.readKey();
+                key = service.readKey();
             }
             while (key < 0 || key > 8);
             switch (key) {
                 case 1:
-                    menu.menuItemCreatePortable(portableAppliancesArray, MESSAGE_CREATE_LIST_PORTABLE, "src/portable.txt");
-                    menu.menuItemCreateStationary(stationaryAppliancesArray, MESSAGE_CREATE_LIST_STATIONARY, "src/stationary");
+                    menu.menuItemCreatePortable(house.getPortableAppliances(),
+                            MESSAGE_CREATE_LIST_PORTABLE, "src/portable.txt");
+                    menu.menuItemCreateStationary(house.getStationaryAppliances(),
+                            MESSAGE_CREATE_LIST_STATIONARY);
                     view.printStringInput(MESSAGE_IS_CREATED);
                     break;
                 case 2:
-                    menu.menuItemSetOn(stationaryAppliancesArray);
+                    menu.menuItemSetOn(house.getStationaryAppliances());
                     break;
                 case 3:
-                    menu.menuItemSetOn(portableAppliancesArray);
+                    menu.menuItemSetOn(house.getPortableAppliances());
                     break;
                 case 4:
-                    menu.menuItemSortArray(portableAppliancesArray);
+                    menu.menuItemSortArray(house.getPortableAppliances());
                     break;
                 case 5:
-                    menu.menuItemSortArray(stationaryAppliancesArray);
+                    menu.menuItemSortArray(house.getStationaryAppliances());
                     break;
                 case 6:
-                    menu.menuItemGetResultPower(stationaryAppliancesArray, portableAppliancesArray);
+                    menu.menuItemGetResultPower(house.getStationaryAppliances(), house.getPortableAppliances());
                     break;
                 case 7:
-                    menu.menuItemGetArrayBetweenParametrs(stationaryAppliancesArray, portableAppliancesArray);
+                    menu.menuItemGetArrayBetweenParametrs(house.getStationaryAppliances(), house.getPortableAppliances());
                     break;
                 case 8:
-                   menu.menuItemPrintArrayList(stationaryAppliancesArray,portableAppliancesArray);
+                   menu.menuItemPrintArrayList(house.getStationaryAppliances(),house.getPortableAppliances());
                     break;
                 case 0:
                     return;

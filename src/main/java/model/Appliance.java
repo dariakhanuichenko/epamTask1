@@ -1,8 +1,9 @@
 package model;
 
-public class Appliance {
-    protected String name;
-    protected int power;
+public abstract class Appliance {
+    String name;
+    int power;
+    boolean isOn;
 
     public boolean isOn() {
         return isOn;
@@ -12,8 +13,6 @@ public class Appliance {
         isOn = on;
     }
 
-    protected boolean isOn;
-
     public String getName() {
         return name;
     }
@@ -21,8 +20,6 @@ public class Appliance {
     public int getPower() {
         return power;
     }
-
-
 
     public Appliance() {
     }
@@ -42,11 +39,6 @@ public class Appliance {
             Appliance temp = (Appliance) obj;
             return name.equals(temp.name) && (power == temp.power);
         } else return false;
-    }
-
-    @Override
-    public int hashCode() {
-        return (int) 31 * power + ((name == null) ? 0 : name.hashCode());
     }
 }
 

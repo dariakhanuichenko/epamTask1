@@ -1,12 +1,14 @@
 package view;
 
-import java.util.ArrayList;
+import model.Appliance;
+
+import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class View {
 
-    static String MESSAGES_BUNDLE_NAME = "messages";
+    private static String MESSAGES_BUNDLE_NAME = "messages";
     private  final ResourceBundle bundle ;
 
     /**
@@ -28,9 +30,9 @@ public class View {
      *
      * @param arr- array , which we will print
      */
-    public void printArray(ArrayList arr) {
-        for (int i = 0; i < arr.size(); i++) {
-            System.out.println(arr.get(i).toString());
+    public void printArray(List<Appliance> arr) {
+        for (Appliance a:arr) {
+            System.out.println(a.toString());
         }
     }
 
@@ -38,7 +40,7 @@ public class View {
      *
      * @param array- array of strings, which we will print
      */
-    public void printArrayNames(ArrayList<String> array) {
+    public void printArrayNames(List<String> array) {
         for (int i = 0; i < array.size(); i++)
             System.out.println(i + ". " + array.get(i));
     }
@@ -47,7 +49,7 @@ public class View {
      *
      * @param message- string, which we will print
      */
-    public void printMessage(String message) {
+    private void printMessage(String message) {
         System.out.println(message);
     }
 
@@ -61,7 +63,7 @@ public class View {
         System.out.println(number);
     }
 
-    public String concatenationString(String... message) {
+    private String concatenationString(String... message) {
         StringBuilder concatString = new StringBuilder();
         for (String v : message) {
             concatString = concatString.append(v);

@@ -18,4 +18,5 @@ public  class StationaryAppliance extends Appliance {
     public String toString(){
         return String.format("name:  %15s  power: %3d  on: %1s (%2d;%2d);", name, power, isOn ? "+":"-", x, y);
     }
+
 }

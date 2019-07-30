@@ -1,30 +1,33 @@
 package controller;
 
+import model.services.Service;
 import reader.FileRead;
 import view.View;
 
 import java.io.IOException;
-import java.util.ArrayList;
+
+import java.util.List;
 
 import static view.Messages.*;
 
-public class Menu {
-    private FileRead fileRead = new FileRead();
+class Menu {
+    private FileRead fileRead;
     private View view;
-    private UtilityArrayListAppliance utility;
+    private Service service;
 
 
-    public Menu(View view) {
+     Menu(View view) {
+        this.fileRead = new FileRead();
         this.view = view;
-        utility = new UtilityArrayListAppliance(view);
+        this.service = new Service(view);
     }
 
     /**
      * @param portableAppliancesArray- the array in which we read the array from the file
-     * @param message - string(locale) to notify user what's happen
-     * @param fileName- name of file from which we will read
+     * @param message                  - string(locale) to notify user what's happen
+     * @param fileName-                name of file from which we will read
      */
-    public void menuItemCreatePortable(ArrayList portableAppliancesArray, String message, String fileName) {
+     void menuItemCreatePortable(List portableAppliancesArray, String message, String fileName) {
         try {
             fileRead.readApplianceePortableArray(fileName, portableAppliancesArray);
             view.printStringInput(message);
@@ -36,41 +39,35 @@ public class Menu {
 
     /**
      * @param stationaryAppliance- the array in which we read the array from the file
-     * @param message - string(locale) to notify user what's happen
-     * @param fileName- name of file from which we will read
+     * @param message              - string(locale) to notify user what's happen
      */
-    public void menuItemCreateStationary(ArrayList stationaryAppliance, String message, String fileName) {
-        try {
-            fileRead.readApplianceePortableArray(fileName, stationaryAppliance);
-            view.printStringInput(message);
-            view.printArray(stationaryAppliance);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+     void menuItemCreateStationary(List stationaryAppliance, String message) {
+        service.readEnum(stationaryAppliance);
+        view.printStringInput(message);
+        view.printArray(stationaryAppliance);
     }
 
     /**
      * @param appliancesArray- array in which we will make variable isOn=true
      */
-    public void menuItemSetOn(ArrayList appliancesArray) {
+     void menuItemSetOn(List appliancesArray) {
 
-        if (utility.checkArrayNotEmpty(appliancesArray)) {
+        if (service.checkArrayNotEmpty(appliancesArray)) {
             view.printStringInput(MESSAGE_NUMBER_BY_APPLIANCE);
-            utility.setIsOnAppliances(utility.toArrayListAppliance(appliancesArray), true);
+            service.setIsOnAppliances(appliancesArray, true);
 
         } else view.printStringInput(MESSAGE_SELECT_FIRST_STATEMENT);
     }
 
     /**
-     *
      * @param appliancesArray- array which we will sort
      */
-    public void menuItemSortArray(ArrayList appliancesArray) {
+     void menuItemSortArray(List appliancesArray) {
 
-        if (utility.checkArrayNotEmpty(appliancesArray)) {
+        if (service.checkArrayNotEmpty(appliancesArray)) {
             view.printStringInput(MESSAGE_LIST_OF_APPLIANCES);
-            view.printArray(utility.sort(
-                    utility.toArrayListAppliance(appliancesArray),
+            view.printArray(service.sort(
+                    appliancesArray,
                     0, appliancesArray.size() - 1));
         } else view.printStringInput(MESSAGE_SELECT_FIRST_STATEMENT);
 
@@ -80,36 +77,34 @@ public class Menu {
      * @param appliancesArray1-array in which we will find working power
      * @param appliancesArray2-array in which we will find working power
      */
-    public void menuItemGetResultPower(ArrayList appliancesArray1, ArrayList appliancesArray2) {
-        if (utility.checkArrayNotEmpty(appliancesArray1) || utility.checkArrayNotEmpty(appliancesArray2)) {
+     void menuItemGetResultPower(List appliancesArray1, List appliancesArray2) {
+        if (service.checkArrayNotEmpty(appliancesArray1) || service.checkArrayNotEmpty(appliancesArray2)) {
             view.printInteger(MESSAGE_RESULT_POWER,
-                    utility.getAllUsePower(utility.toArrayListAppliance(appliancesArray1),
-                            utility.toArrayListAppliance(appliancesArray2)));
+                    service.sumaWorkingPower(appliancesArray1,
+                            appliancesArray2));
         } else view.printStringInput(MESSAGE_SELECT_FIRST_STATEMENT);
     }
 
     /**
      * @param stationaryAppliancesArray- array in which we will find appliances beetwen input parametrs(by power)
-     * @param portableAppliancesArray- array in which we will find appliances beetwen input parametrs(by power)
+     * @param portableAppliancesArray-   array in which we will find appliances beetwen input parametrs(by power)
      */
-    public void menuItemGetArrayBetweenParametrs(ArrayList stationaryAppliancesArray,
-                                                 ArrayList portableAppliancesArray) {
-        if (utility.checkArrayNotEmpty(stationaryAppliancesArray) || utility.checkArrayNotEmpty(portableAppliancesArray)) {
-            view.printArray(utility.getAllAppliancesByParametrs(
-                    utility.toArrayListAppliance(stationaryAppliancesArray),
-                    utility.toArrayListAppliance(portableAppliancesArray),
-                    utility.readKey(), utility.readKey()));
+     void menuItemGetArrayBetweenParametrs(List stationaryAppliancesArray,
+                                                 List portableAppliancesArray) {
+        if (service.checkArrayNotEmpty(stationaryAppliancesArray) || service.checkArrayNotEmpty(portableAppliancesArray)) {
+            view.printArray(service.getAllAppliancesByParametrs(
+                    stationaryAppliancesArray, portableAppliancesArray, service.readKey(), service.readKey()));
+
         } else view.printStringInput(MESSAGE_SELECT_FIRST_STATEMENT);
     }
 
     /**
-     *
      * @param stationaryAppliancesArray- array of stationary appliances which we will print
-     * @param portableAppliancesArray- array of portable appliances which we will print
+     * @param portableAppliancesArray-   array of portable appliances which we will print
      */
-    public void menuItemPrintArrayList(ArrayList stationaryAppliancesArray,
-                                       ArrayList portableAppliancesArray) {
-        if (utility.checkArrayNotEmpty(stationaryAppliancesArray) || utility.checkArrayNotEmpty(portableAppliancesArray)) {
+     void menuItemPrintArrayList(List stationaryAppliancesArray,
+                                       List portableAppliancesArray) {
+        if (service.checkArrayNotEmpty(stationaryAppliancesArray) || service.checkArrayNotEmpty(portableAppliancesArray)) {
             view.printStringInput(MESSAGE_LIST_OF_APPLIANCES);
             view.printArray(portableAppliancesArray);
             view.printArray(stationaryAppliancesArray);

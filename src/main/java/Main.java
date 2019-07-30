@@ -1,4 +1,5 @@
 import controller.Controller;
+import model.House;
 
 import java.util.Scanner;
 
@@ -9,7 +10,7 @@ public class Main {
 
     public static void main(String[] args){
         String locale=validationLocaleName();
-        Controller controller=new Controller(locale);
+        Controller controller=new Controller(locale, new House());
         controller.program();
     }
 
@@ -18,7 +19,7 @@ public class Main {
      *
      * @return string
      */
-    public static String readString(){
+    private static String readString(){
         Scanner scan=new Scanner(System.in);
         System.out.println("Choose language(ua/en)");
         while (!scan.hasNextLine()) {
@@ -35,7 +36,7 @@ public class Main {
      * @return checked string, it is like "ua|en|UA|EN|eN|En|Ua|uA"
      */
 
-    public static String validationLocaleName() {
+    private static String validationLocaleName() {
         String str;
         do {
             //view.printStringInput(MESSAGE_INPUT_NUMBER_BETWEEN);
